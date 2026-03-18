@@ -1,7 +1,6 @@
 ---
 name: loadout-format
 description: The exact file format, frontmatter fields, and structure for every file type that Loadout generates — agents, skills, commands, rules, and hooks.
-origin: loadout
 ---
 
 # Loadout File Formats

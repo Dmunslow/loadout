@@ -3,7 +3,6 @@ name: loadout-design
 description: Decision-making framework for translating interview answers into the
   right combination of loadout files. Use this after the discovery interview to
   decide what to build before building anything.
-origin: loadout
 ---
 
 # Loadout Design Framework

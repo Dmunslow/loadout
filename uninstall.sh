@@ -17,6 +17,8 @@ echo "Uninstalling Loadout..."
 echo ""
 
 while IFS= read -r file; do
+  # Skip metadata header lines
+  [[ "$file" == \#* ]] && continue
   filepath="$CLAUDE_DIR/$file"
   if [ -f "$filepath" ]; then
     rm "$filepath"
@@ -27,9 +29,13 @@ while IFS= read -r file; do
 done < "$MANIFEST"
 
 # Clean up empty directories that Loadout created
-rmdir "$CLAUDE_DIR/skills/loadout-format" 2>/dev/null || true
-rmdir "$CLAUDE_DIR/skills/discovery" 2>/dev/null || true
-rmdir "$CLAUDE_DIR/skills/loadout-design" 2>/dev/null || true
+for dir in skills/loadout-format skills/discovery skills/loadout-design; do
+  rmdir "$CLAUDE_DIR/$dir" 2>/dev/null || true
+done
+# Clean up parent directories if empty (only removes if empty)
+for dir in skills agents commands rules; do
+  rmdir "$CLAUDE_DIR/$dir" 2>/dev/null || true
+done
 
 # Remove the manifest itself
 rm "$MANIFEST"

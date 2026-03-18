@@ -3,7 +3,6 @@ name: discovery
 description: How to run the Loadout discovery interview — what to ask, when to probe,
   how to read signals from a codebase and memory, and how to translate user answers
   into the right set of output files.
-origin: loadout
 ---
 
 # Discovery Interview Guide
@@ -152,7 +151,37 @@ For existing projects, lead with suggestions from git history or memory:
 
 **Purpose:** Capture the user's non-negotiables and recurring frustrations.
 
-**Ask:**
+**For existing projects — scan for rules first:**
+
+Before asking the user, read these sources to infer likely rules:
+
+1. **CLAUDE.md** — if one exists, extract any instructions, conventions, or
+   constraints already written there. These are strong signals.
+2. **Existing `.claude/rules/`** — if the project already has rule files, read
+   them to avoid suggesting duplicates.
+3. **README.md** — look for contribution guidelines, coding standards, or
+   conventions sections.
+4. **Config files** — `.eslintrc`, `.prettierrc`, `tsconfig.json`, `.editorconfig`,
+   `pyproject.toml`, etc. Infer formatting and style rules from these.
+5. **Git history** — look for reverted commits or fix-up patterns that suggest
+   things that went wrong (these often point to rules that should exist).
+
+Present your findings as suggestions before asking the open question:
+
+> "Based on what I can see in your project, these rules might make sense:
+>
+> - [suggested rule from CLAUDE.md or config]
+> - [suggested rule from coding conventions]
+> - [suggested rule from git patterns]
+>
+> Do any of these feel right? And what else would you add — things Claude should
+> always do, or things it should never do?"
+
+This gives the user a starting point instead of a blank slate. They can accept,
+reject, or modify any suggestion and add their own on top.
+
+**For greenfield projects — ask directly:**
+
 > "Now let's talk about rules — the things you want Claude to always do, and
 > the things you never want it to do. For example: never push code to GitHub
 > before you've had a chance to review it, always ask before editing CLAUDE.md,

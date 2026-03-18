@@ -110,11 +110,12 @@ After all files are generated, give the user a clear summary:
 > To use it: these files are already in your `.claude/` folder. Claude Code will
 > pick them up automatically next time you start a session in this project.
 >
-> When you want to add to this later, you can use:
-> - `/add-skill` — to teach Claude about a new topic or domain
-> - `/add-agent` — to create a new specialist
-> - `/add-rule` — to add a new rule
-> - `/review-loadout` — to check what might need updating as your project evolves"
+> When you want to change things later, you can use:
+> - `/loadout-description` — see what's in your current loadout
+> - `/update-rules` — add, change, or remove rules
+> - `/add-agent` — create a new specialist agent
+> - `/remove-agent` — remove an agent you no longer need
+> - `/loadout-backup` — save a snapshot before making changes"
 
 ---
 

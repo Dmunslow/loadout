@@ -11,8 +11,17 @@ MANIFEST="$CLAUDE_DIR/.loadout-manifest"
 echo "Installing Loadout..."
 echo ""
 
-# Track installed files so uninstall knows what to remove
+# Capture version info
+VERSION=$(git -C "$LOADOUT_DIR" rev-parse HEAD 2>/dev/null || echo "unknown")
+SOURCE_REPO=$(git -C "$LOADOUT_DIR" remote get-url origin 2>/dev/null || echo "unknown")
+INSTALLED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || date +"%Y-%m-%dT%H:%M:%S")
+
+# Write manifest with metadata headers
 > "$MANIFEST"
+echo "# loadout-version: $VERSION" >> "$MANIFEST"
+echo "# installed-at: $INSTALLED_AT" >> "$MANIFEST"
+echo "# source-path: $LOADOUT_DIR" >> "$MANIFEST"
+echo "# source-repo: $SOURCE_REPO" >> "$MANIFEST"
 
 # Install rules
 mkdir -p "$CLAUDE_DIR/rules"
@@ -32,15 +41,31 @@ echo "skills/loadout-design/SKILL.md" >> "$MANIFEST"
 
 # Install agents
 mkdir -p "$CLAUDE_DIR/agents"
-cp "$LOADOUT_DIR/.claude/agents/loadout-architect.md" "$CLAUDE_DIR/agents/loadout-architect.md"
-echo "agents/loadout-architect.md" >> "$MANIFEST"
+for agent in loadout-architect loadout-doctor loadout-describer loadout-differ loadout-backup rules-editor agent-manager loadout-updater; do
+  cp "$LOADOUT_DIR/.claude/agents/$agent.md" "$CLAUDE_DIR/agents/$agent.md"
+  echo "agents/$agent.md" >> "$MANIFEST"
+done
 
 # Install commands
 mkdir -p "$CLAUDE_DIR/commands"
-cp "$LOADOUT_DIR/.claude/commands/new-loadout.md" "$CLAUDE_DIR/commands/new-loadout.md"
-echo "commands/new-loadout.md" >> "$MANIFEST"
+for cmd in new-loadout loadout-doctor loadout-description loadout-diff loadout-backup update-rules add-agent remove-agent update-loadout; do
+  cp "$LOADOUT_DIR/.claude/commands/$cmd.md" "$CLAUDE_DIR/commands/$cmd.md"
+  echo "commands/$cmd.md" >> "$MANIFEST"
+done
 
 echo "Installed files:"
-cat "$MANIFEST" | sed 's/^/  ✓ /'
+grep -v '^#' "$MANIFEST" | sed 's/^/  ✓ /'
 echo ""
-echo "Loadout installed. Open any project and run /new-loadout to get started."
+echo "Loadout installed (version: ${VERSION:0:7})."
+echo "Open any project and run /new-loadout to get started."
+echo ""
+echo "Available commands:"
+echo "  /new-loadout          Set up a new project loadout"
+echo "  /loadout-description  See what's in your current project's loadout"
+echo "  /update-rules         Add or remove rules"
+echo "  /add-agent            Create a new specialist agent"
+echo "  /remove-agent         Remove an agent"
+echo "  /loadout-backup       Backup or restore your loadout"
+echo "  /loadout-doctor       Check installation health"
+echo "  /loadout-diff         See what's changed in the repo"
+echo "  /update-loadout       Update to the latest version"
