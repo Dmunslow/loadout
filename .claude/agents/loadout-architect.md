@@ -132,7 +132,7 @@ After all files are generated, give the user a clear summary:
 > - `/add-agent` — create a new specialist agent
 > - `/remove-agent` — remove an agent you no longer need
 > - `/loadout-backup` — save a snapshot before making changes
-> - `/reset-project` — remove all loadout files from this project"
+> - `/loadout-reset` — remove all loadout files from this project"
 
 ---
 

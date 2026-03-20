@@ -48,7 +48,7 @@ done
 
 # Install commands
 mkdir -p "$CLAUDE_DIR/commands"
-for cmd in new-loadout loadout-doctor loadout-description loadout-diff loadout-backup update-rules add-agent remove-agent update-loadout reset-project; do
+for cmd in new-loadout loadout-doctor loadout-description loadout-diff loadout-backup update-rules add-agent remove-agent update-loadout loadout-reset; do
   cp "$LOADOUT_DIR/.claude/commands/$cmd.md" "$CLAUDE_DIR/commands/$cmd.md"
   echo "commands/$cmd.md" >> "$MANIFEST"
 done
@@ -69,4 +69,4 @@ echo "  /loadout-backup       Backup or restore your loadout"
 echo "  /loadout-doctor       Check installation health"
 echo "  /loadout-diff         See what's changed in the repo"
 echo "  /update-loadout       Update to the latest version"
-echo "  /reset-project        Remove loadout files from a project"
+echo "  /loadout-reset        Remove loadout files from a project"
