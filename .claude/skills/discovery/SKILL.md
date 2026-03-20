@@ -44,9 +44,22 @@ Before asking a single question, gather all available context:
 - Frequently modified files or folders
 - Patterns in the type of work being done
 
-**Note on chat history:** Claude does not have access to prior conversation
-transcripts directly, but memory and `CLAUDE.md` serve as the persistent record
-of past context. Prioritise those.
+**From session history:**
+- Sessions are stored as `.jsonl` files in `~/.claude/projects/<project-hash>/`.
+  The project hash is the project's absolute path with path separators replaced
+  by dashes (e.g., `c--Users-Duncan-my-project`).
+- List the `.jsonl` files sorted by modification time. Read the **3 most recent**
+  sessions, up to **200 lines each**.
+- Focus on entries where `type` is `"user"` or `"assistant"`. Skip `"thinking"`,
+  `"file-history-snapshot"`, and `"queue-operation"` entries.
+- From user messages: what the user asked Claude to do, what they corrected or
+  pushed back on, what problems they described.
+- From assistant messages: which tools were used (look for `tool_use` content
+  blocks — capture the tool `name` and intent, not full input). Pay special
+  attention to CLI tools invoked via Bash (`gh`, `docker`, `psql`, `curl`, etc.)
+  — these are strong signals for agent design.
+- Do not store or repeat back sensitive content (API keys, credentials, personal
+  information). Synthesise observations, never present raw session data.
 
 ### 3. Decide which path to take
 
@@ -128,9 +141,15 @@ These become commands and agents.
 > reviewing your code before saving, or fixing errors.
 > What's on your list?"
 
-For existing projects, lead with suggestions from git history or memory:
+For existing projects, lead with suggestions from git history, session history,
+and memory:
 > "Looking at your recent work, it seems like you've been spending a lot of time
-> on [X]. Is that a regular part of your workflow? What else comes up repeatedly?"
+> on [X]. I also noticed you use [tool/CLI] frequently — is that something you'd
+> want a dedicated agent for? What else comes up repeatedly?"
+
+Tool usage patterns from session history are especially valuable here. If the
+user has been running `gh` commands, Docker, database queries, or other CLIs
+through Claude, those are strong candidates for dedicated agents or commands.
 
 **Probe if the answer is vague:**
 - "Even something small counts — what did you ask Claude to do in your last session?"
@@ -312,3 +331,4 @@ Wait for confirmation before generating anything.
 | "I keep switching between Claude and [app]" | MCP integration |
 | "I always have to copy from [app] into Claude" | MCP integration |
 | "The most important part of this project is X" | Skill for X domain |
+| User runs `gh`/`docker`/CLI tools in sessions | Agent with that tool baked in |

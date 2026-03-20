@@ -37,6 +37,41 @@ When `/new-loadout` is triggered:
 3. Read everything in `project-context/` before asking any questions. Use this
    material to pre-fill as much of the interview as possible.
 
+4. Scan the project's Claude Code session history for additional context.
+   Sessions are stored as `.jsonl` files in `~/.claude/projects/<project-hash>/`.
+   The project hash is the project's absolute path with path separators replaced
+   by dashes (e.g., `c--Users-Duncan-my-project`).
+
+   **How to read sessions:**
+   - List the `.jsonl` files and sort by modification time. Read only the **3 most
+     recent** sessions.
+   - Each line is a JSON object. Focus on objects where `type` is `"user"` or
+     `"assistant"`. Skip `"thinking"`, `"file-history-snapshot"`, and
+     `"queue-operation"` entries.
+   - From user messages, extract: what the user asked Claude to do, what problems
+     they described, and what they corrected or pushed back on.
+   - From assistant messages, extract: which tools were used (look for tool_use
+     content blocks — capture the tool `name` and the high-level intent, not the
+     full input). Pay special attention to recurring tool patterns like `gh`,
+     database CLIs, build tools, or external APIs — these are strong signals for
+     agent design.
+
+   **What to look for:**
+   - Repeated task patterns (e.g., user asks for PR reviews in every session)
+   - Tools and CLIs used frequently (e.g., `gh pr`, `docker`, `psql`, `curl`)
+   - Corrections or frustrations (e.g., "no, don't do it that way")
+   - Types of work: is it mostly frontend, backend, devops, docs, etc.?
+
+   **Limits:**
+   - Read at most 200 lines from each session file. This is enough to capture the
+     shape of a conversation without overwhelming context.
+   - Do not store or repeat back any sensitive content (API keys, credentials,
+     personal information) found in session history.
+   - Use this data to inform suggestions during the interview — do not present raw
+     session data to the user. Instead, synthesise it into observations like:
+     "It looks like you use the GitHub CLI a lot — would an agent that handles
+     PR workflows be useful?"
+
 ## The Interview
 
 Run the interview in this order. Each question is a node — probe deeper before
@@ -58,9 +93,11 @@ Present your best-guess summary of the project based on what you read from the
 codebase and any files in `project-context/`. Ask the user to correct anything
 wrong and fill in what is missing.
 
-Additionally, scan git history for signals about repeated work:
+Additionally, scan git history and session history for signals about repeated work:
 - Look at recent PR titles and commit messages for patterns
 - Identify frequently touched files or areas of the codebase
+- Surface tool usage patterns from session history (e.g., "You seem to use `gh`
+  frequently" or "You've been running database queries a lot")
 - Surface these as suggestions: "It looks like you've been working a lot on X —
   is that something you'd want Claude to be better set up for?"
 
@@ -69,8 +106,11 @@ Ask what kinds of things the user finds themselves asking Claude to do over and
 over. Give examples to make the question concrete: reviewing work, writing tests,
 explaining errors, planning features, generating content, fixing bugs.
 
-For existing projects, lead with suggestions surfaced from git history before
-asking open-endedly.
+For existing projects, lead with suggestions surfaced from git history and
+session history before asking open-endedly. Tool usage patterns from sessions
+are especially useful here — if the user has been running `gh` commands, Docker,
+or database queries through Claude, those are strong candidates for dedicated
+agents or commands.
 
 Probe if needed:
 - "Even something small counts — what did you ask Claude to do in your last session?"
@@ -118,4 +158,7 @@ Ask the user which they prefer before generating any agents.
 - **Hooks** — infer from the stack (TypeScript → typecheck hook, Prettier/ESLint →
   format hook, any project → session-save hook)
 - **Commands** — infer from repeated tasks described in Q3
-- **Agents** — infer from the types of work described in Q3
+- **Agents** — infer from the types of work described in Q3 and tool usage
+  patterns observed in session history. If an agent would benefit from a specific
+  CLI tool (e.g., `gh`, `docker`, `psql`), include that tool in the agent's
+  design and instructions
