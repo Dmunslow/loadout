@@ -97,6 +97,22 @@ Every file must be complete and ready to use. No placeholders, no TODOs,
 no "fill this in later". If you don't have enough information to write something
 fully, go back and ask rather than leaving blanks.
 
+**After generating all files, write a project manifest:**
+
+Create `.claude/.loadout-project-manifest` listing every file you just generated,
+one path per line (relative to the project root), plus metadata headers:
+
+```
+# loadout-generated-at: <ISO timestamp>
+# loadout-version: project
+.claude/rules/common/project-rules.md
+.claude/agents/my-agent.md
+.claude/commands/my-command.md
+```
+
+This file is what `/reset-project` uses to safely remove only loadout-created files.
+Do not list it in itself. Do not list any file the user created manually.
+
 ---
 
 ## Phase 5: Wrap Up
@@ -115,7 +131,8 @@ After all files are generated, give the user a clear summary:
 > - `/update-rules` — add, change, or remove rules
 > - `/add-agent` — create a new specialist agent
 > - `/remove-agent` — remove an agent you no longer need
-> - `/loadout-backup` — save a snapshot before making changes"
+> - `/loadout-backup` — save a snapshot before making changes
+> - `/reset-project` — remove all loadout files from this project"
 
 ---
 
