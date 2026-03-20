@@ -8,6 +8,21 @@ LOADOUT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 MANIFEST="$CLAUDE_DIR/.loadout-manifest"
 
+cat << 'LOGO'
+
+   ▛▀▀                    ▀▀▜
+   ▌                         ▐
+   ▌   ████████████          ▐
+   ▌                         ▐
+   ▌   ████  ████████  ██    ▐
+   ▌                         ▐
+   ▌   ██████████            ▐
+   ▌                         ▐
+   ▙▄▄                    ▄▄▟
+
+           l o a d o u t
+
+LOGO
 echo "Installing Loadout..."
 echo ""
 

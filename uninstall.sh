@@ -13,6 +13,21 @@ if [ ! -f "$MANIFEST" ]; then
   exit 0
 fi
 
+cat << 'LOGO'
+
+   ▛▀▀                    ▀▀▜
+   ▌                         ▐
+   ▌   ████████████          ▐
+   ▌                         ▐
+   ▌   ████  ████████  ██    ▐
+   ▌                         ▐
+   ▌   ██████████            ▐
+   ▌                         ▐
+   ▙▄▄                    ▄▄▟
+
+           l o a d o u t
+
+LOGO
 echo "Uninstalling Loadout..."
 echo ""
 
