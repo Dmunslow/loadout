@@ -61,6 +61,22 @@ Follow the discovery skill question by question. Key principles:
   moving on.
 - Keep the tone conversational throughout. You are helping someone, not auditing them.
 
+**Archetype handling:**
+
+The discovery skill will ask the user whether they want an archetype or to
+build from scratch. Based on their answer:
+
+- **Archetype chosen**: Note which archetype was selected. Run the shortened
+  interview (Q1, Q3, Q4, Q5, Q6). After the interview, read the archetype
+  defaults from `archetypes/<archetype-name>/` in the Loadout repo — read
+  `archetype.md`, all files in `rules/`, and all files in `agents/`. Use
+  these as the base, then layer the user's custom context on top. Do not
+  re-ask about anything the archetype already covers unless the user
+  specifically contradicts it.
+
+- **From scratch**: Run the full interview (Q1–Q6) and generate everything
+  from context alone.
+
 ---
 
 ## Phase 3: Design

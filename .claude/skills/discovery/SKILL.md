@@ -48,7 +48,46 @@ Before asking a single question, gather all available context:
 transcripts directly, but memory and `CLAUDE.md` serve as the persistent record
 of past context. Prioritise those.
 
-### 3. Decide which path to take
+### 3. Offer the archetype choice
+
+Before starting the interview, ask whether the user wants to start from an
+archetype or build from scratch:
+
+> "Before we start — would you like to use a preset archetype as your
+> starting point, or build everything from your specific context?
+>
+> **Archetypes** give you a ready-made set of rules and agents for your role.
+> We then tailor them to your project through the interview. The options are:
+>
+> - **Developer** — code review, test-driven development, planning, git and
+>   security rules. Built on best practices from the open-source community.
+> - **Product Manager** — PRD writing, user stories, UX review, and a
+>   personal assistant for messages and scheduling.
+> - **Data Analyst** — query building, data cleaning, and report writing,
+>   with rules around data safety and documentation.
+> - **Creative** — drafting, editing, and repurposing content, with rules
+>   around voice, audience, and originality.
+>
+> Or say **'from scratch'** and we'll build everything based on your answers.
+>
+> Which would you like?"
+
+Wait for the user's response. Then:
+
+**If they chose an archetype:**
+- Note the chosen archetype — the loadout-architect will load its defaults
+  after the interview
+- Tell the user: "Great — I'll use the [archetype] defaults as our starting
+  point. Now let's tailor them to your specific project."
+- Run a shortened interview: Q1 (project context), Q3 (any additional
+  repeated tasks beyond the archetype defaults), Q4 (any extra rules),
+  Q5 (external tools), Q6 (model preference)
+- Skip Q2 unless it's an existing project with significant prior context
+
+**If they chose 'from scratch':**
+- Proceed with the full interview below, Q1 through Q6
+
+### 4. Decide which path to take
 
 **Greenfield** (no codebase, no prior context):
 - Run all interview questions in order
